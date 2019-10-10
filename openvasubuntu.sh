@@ -11,13 +11,14 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #
 
+#!/bin/bash
 iface=$(ip route | grep default | sed 's/.*dev \([0-9a-z]*\) .*/\1/g' | head -n 1)
 ip=$(ip addr show "$iface" | grep 'inet ' | tr -s ' /' ' ' | cut -f 3 -d ' ')
 read -sp 'Password: ' password
 apt update
 apt install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
-curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 apt update
 apt install -y docker-ce docker-ce-cli containerd.io
 systemctl start docker
@@ -29,4 +30,3 @@ do
 sleep 5
 done
 echo Complete!
-
